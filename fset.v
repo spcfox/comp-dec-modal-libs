@@ -941,7 +941,6 @@ Section Fixpoints.
     move/subnK<-. elim: (m-n) => {m} [|m IHm]; first exact: subxx.
     apply: sub_trans IHm _. rewrite addSn. exact: iterFsub1. 
   Qed.
-  Arguments iterFsub [n m].
 
   Lemma iterFbound n : iter n F fset0 `<=` U.
   Proof. elim: n => //= n. exact: F_bound. Qed.
