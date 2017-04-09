@@ -3,6 +3,7 @@ bcase.v
 edone.v
 base.v
 fset.v
+fset_tac.v
 induced_sym.v
 modular_hilbert.v
 sltype.v
