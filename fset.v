@@ -1103,7 +1103,7 @@ Section Pruning.
     apply/leP. apply: proper_size. exact: properD1.
   Qed.
 
-  Lemma prune_ind (P : {fset T} -> Type) S :
+  Lemma prune_myind (P : {fset T} -> Type) S :
     P S ->
     (forall x S0, p x S0 -> x \in S0 -> P S0 -> S0 `<=` S -> P (S0 `\` [fset x])) ->
     P (prune S).
@@ -1118,7 +1118,7 @@ Section Pruning.
 
   Lemma prune_sub S : prune S `<=` S.
   Proof.
-    apply prune_ind; first by rewrite subxx.
+    apply prune_myind; first by rewrite subxx.
     move => x S' _ _ _. apply: sub_trans. exact: fsubDl.
   Qed.
 
