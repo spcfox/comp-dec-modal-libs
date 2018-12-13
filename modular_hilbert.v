@@ -96,7 +96,6 @@ Hint Resolve axI.
 Ltac C := eapply axC.
 Ltac B := eapply axB.
 Ltac drop := rule axK.
-Ltac swap := rule axC.
 
 Ltac Cut u := apply (mp2 (axB u _ _)); last first.
 Ltac Have u := apply (mp2 (axS u _ _)); last first.

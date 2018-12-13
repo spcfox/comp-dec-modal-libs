@@ -1,5 +1,6 @@
 (* (c) Copyright Christian Doczkal, Saarland University                   *)
 (* Distributed under the terms of the CeCILL-B license                    *)
+Require Import Recdef.
 Require Import mathcomp.ssreflect.ssreflect.
 From mathcomp Require Import all_ssreflect.
 
@@ -1093,8 +1094,6 @@ End Maximal.
 Section Pruning.
   Variables (T:choiceType) (p : T -> {fset T} -> bool).
   Implicit Types (S : {fset T}).
-
-  Require Import Recdef.
 
   Function prune S {measure size} :=
     if fpick (p^~ S) S is Some x then prune (S `\` [fset x]) else S.
