@@ -91,7 +91,7 @@ Section MTheory0.
 Proof. move => ax A B. by [mp; first mp; first apply ax]. Qed.
 End MTheory0.
 
-Hint Resolve axI.
+Hint Resolve axI : core.
 
 Ltac C := eapply axC.
 Ltac B := eapply axB.
@@ -135,7 +135,7 @@ Record pSystem := PSystem {
 notations based on [Bot] *)
 
 Definition Bot := nosimpl Bot'.
-Arguments Bot [p].
+Arguments Bot {p}.
 
 (** Notations for derived logical opertions *)
 
@@ -205,7 +205,7 @@ Section PTheoryBase.
 
 End PTheoryBase.
 
-Hint Resolve axT axAEl axAEr.
+Hint Resolve axT axAEl axAEr : core.
 
 (** Morphisms for defined locial operators *)
 
@@ -278,7 +278,7 @@ Proof. rewrite /Eqi. solve_proper. Qed.
 
 Lemma ax_eq_refl (pS : pSystem)(s : pS) : mprv (s <--> s).
 Proof. rule axEI; exact: axI. Qed.
-Hint Resolve ax_eq_refl.
+Hint Resolve ax_eq_refl : core.
 
 (** *** Big Boolean Operators *)
 
@@ -541,7 +541,7 @@ Section KTheory.
 
   Lemma axBT : mprv (@AX kS Top).
   Proof. exact: rNec. Qed.
-  Hint Resolve axBT.
+  Hint Resolve axBT : core.
 
   Lemma axDF : mprv (@EX kS Bot ---> Bot).
   Proof. rewrite /EX. Intro; Apply. drop. exact: axBT. Qed.
