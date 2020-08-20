@@ -121,8 +121,8 @@ Section Extensionality.
     move: X Y => [xs ax_xs] [ys ax_ys] /= H. 
     change (xs == ys). change (xs =i ys) in H.
     case/andP : ax_xs ax_ys => xs1 /eqP -> /andP [ys1 /eqP ->].
-    have ext : perm_eq xs =1 perm_eq ys by apply/perm_eqlP ; rewrite uniq_perm_eq //=.
-    rewrite (eq_choose ext). apply/eqP. apply: choose_id => //. exact: perm_eqlE.
+    have ext : perm_eql xs ys by apply/permPl/uniq_perm.
+    rewrite -(eq_choose ext). apply/eqP/choose_id => //. exact/permPl.
   Qed.
 
   Lemma fset_ext  X Y : X =i Y -> X = Y :> {fset T}.
@@ -143,12 +143,12 @@ Section SetOfSeq.
   Proof. exact: chooseP. Qed.
 
   Lemma fseq_uniq xs : uniq (fseq xs).
-  Proof. by rewrite -(perm_eq_uniq (fseq_perm_eq xs)) undup_uniq. Qed.
+  Proof. by rewrite -(perm_uniq (fseq_perm_eq xs)) undup_uniq. Qed.
 
   Lemma fseq_axiom (xs : seq T) : fset_axiom (fseq xs).
   Proof.
     rewrite /fset_axiom /= fseq_uniq /= {1}/fseq /=. apply/eqP.
-    have P := perm_eqlP (fseq_perm_eq xs).
+    have P := permPl (fseq_perm_eq xs).
     rewrite -(eq_choose P). apply: choose_id => //. exact: fseq_perm_eq.
   Qed.
 
@@ -157,7 +157,7 @@ Section SetOfSeq.
   Lemma set_ofE x xs : (x \in set_of xs) = (x \in xs).
   Proof.
     rewrite -[x \in set_of xs]/(x \in fseq xs) -[x \in xs]mem_undup.
-    symmetry. exact: (perm_eq_mem (fseq_perm_eq _)).
+    symmetry. exact: (perm_mem (fseq_perm_eq _)).
   Qed.
 
   Lemma funiq (X : {fset T}) : uniq X.
@@ -231,7 +231,7 @@ Prenex Implicits fsetU.
 
 Notation "X `|` Y" := (fsetU X Y) (at level 52, left associativity).
 Notation "X `&` Y" := (fsetI X Y) (at level 48, left associativity).
-Notation "X `\` Y" := (fsetD X Y) (at level 48, left associativity).
+Notation "X `\` Y" := (fsetD X Y) (at level 50, left associativity).
 Notation "X `<=` Y" := (subset X Y) (at level 70 ,no associativity).
 Notation "X `<` Y" := (proper X Y) (at level 70, no associativity).
 Notation "[ 'fset' x ]" := (fset1 x) (at level 0,x at level 99, format "[ 'fset'  x ]" ).
@@ -682,7 +682,7 @@ with a separation is equivalent to indexing on the base set and filtering. *)
 Lemma big_sep (T R : choiceType) (idx : R) (op : Monoid.com_law idx) (F : T -> R) (X : {fset T}) p: 
   \big[op/idx]_(i <- [fset x in X | p x]) F i = \big[op/idx]_(i <- X | p i) F i.
 Proof. 
-  rewrite -(big_filter _ p). apply: eq_big_perm. 
+  rewrite -(big_filter _ p). apply: perm_big.
   apply: uniq_perm_eq; try by rewrite ?filter_uniq // funiq.
   move => x. by rewrite !inE mem_filter andbC.
 Qed.
@@ -752,7 +752,7 @@ Section Size.
   Qed.
 
   Lemma size_of_uniq (T0 : choiceType) (s : seq T0) : uniq s -> size (set_of s) = size s.
-  Proof. move/set_of_uniq. exact: perm_eq_size. Qed.
+  Proof. move/set_of_uniq. exact: perm_size. Qed.
 
   Lemma powerset_size X : size (powerset X) = 2 ^ (size X).
   Proof.
@@ -992,9 +992,9 @@ Section GreatestFixpoint.
   Variables (T : choiceType) (U : {fset T}) (F : {fset T} -> {fset T}).
   Hypothesis (F_mono : monotone F) (F_bound : bounded U F).
 
-  Local Notation "~` A" := (U `\` A) (at level 0). 
+  Local Notation "~` A" := (U `\` A).
 
-  Let F' A := ~` (F ~` A).
+  Let F' A := ~` (F (~` A)).
 
   Let mono_F' : monotone F'.
   Proof. move =>  A B H. by rewrite /F' fsetDS ?F_mono ?fsetDS. Qed.
