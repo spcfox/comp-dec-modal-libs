@@ -157,3 +157,4 @@ Section slpTheory.
 End slpTheory.
 
 Notation "[ 'af' C ]" := (\and_(s <- C) interp s) (at level 0, format "[ 'af'  C ]").
+Arguments decomp_ab [form ssub s] S.
